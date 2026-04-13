@@ -1,0 +1,86 @@
+* { box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #f4efe6;
+  color: #2b1d12;
+  margin: 0;
+  padding: 2rem 1rem;
+  line-height: 1.5;
+}
+
+.card {
+  max-width: 640px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  padding: 2rem 2.25rem;
+}
+
+h1 {
+  margin-top: 0;
+  color: #6e1423;
+  letter-spacing: -0.01em;
+}
+
+.subtitle {
+  color: #5b4a3b;
+  margin-bottom: 1.75rem;
+}
+
+form label {
+  display: block;
+  margin-bottom: 1.25rem;
+  font-weight: 600;
+  color: #3a2a1a;
+}
+
+input,
+textarea {
+  display: block;
+  width: 100%;
+  margin-top: 0.4rem;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid #d9ccb9;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 400;
+  background: #fbf7f0;
+}
+
+input:focus,
+textarea:focus {
+  outline: 2px solid #a63446;
+  outline-offset: 1px;
+}
+
+button {
+  background: #6e1423;
+  color: #fff;
+  border: 0;
+  padding: 0.8rem 1.4rem;
+  font: inherit;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover { background: #8a1a2c; }
+button:disabled { background: #a68b7a; cursor: default; }
+
+#result {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  border-top: 1px solid #e4d9c6;
+}
+
+#result pre {
+  background: #fbf7f0;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+.note { color: #5b4a3b; font-size: 0.9rem; }

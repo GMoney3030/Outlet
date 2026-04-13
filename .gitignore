@@ -1,0 +1,8 @@
+node_modules/
+.env
+data/orders.json
+data/token.json
+data/catalog-cache.json
+credentials.json
+*.log
+.DS_Store

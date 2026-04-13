@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Outlet Liquors &mdash; Wedding Order Questionnaire</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="card">
+      <header>
+        <h1>Wedding Order Questionnaire</h1>
+        <p class="subtitle">
+          Tell us a little about your event and we'll draft a wine &amp;
+          liquor order, email you a first pass, and work with you on revisions
+          until it's perfect.
+        </p>
+      </header>
+
+      <form id="order-form">
+        <label>
+          Name, Email, and/or Number
+          <textarea
+            name="contact"
+            rows="3"
+            required
+            placeholder="e.g. Jane & John Doe, jane@example.com, (555) 123-4567"
+          ></textarea>
+        </label>
+
+        <label>
+          How many people are going to be at the wedding?
+          <input
+            type="number"
+            name="guestCount"
+            min="1"
+            max="2000"
+            required
+            placeholder="150"
+          />
+        </label>
+
+        <label>
+          What kind of liquor do they want?
+          <textarea
+            name="liquorPreferences"
+            rows="4"
+            required
+            placeholder="e.g. red &amp; white wine, champagne for toasts, tequila, light beer"
+          ></textarea>
+        </label>
+
+        <button type="submit">Draft my order</button>
+      </form>
+
+      <section id="result" hidden>
+        <h2>Draft order created</h2>
+        <p id="result-summary"></p>
+        <pre id="result-order"></pre>
+        <p class="note">
+          A copy of this draft has been emailed to you. Reply to that email
+          with changes (e.g. "add 2 cases of pinot noir", "remove the tequila",
+          "change champagne to 3 bottles") and we'll send you a revised order.
+          When you reply with "approve" or "confirmed" we'll lock it in and
+          send a pickup date.
+        </p>
+      </section>
+    </main>
+
+    <script src="/form.js"></script>
+  </body>
+</html>
