@@ -12,7 +12,7 @@ function renderLineTable(lineItems) {
   const rows = lineItems.map((li) => {
     const qtyLabel = `${li.quantity} × ${li.name}`;
     const price = money(li.lineGross);
-    const discount = li.caseDiscountApplied ? `  (-${money(li.caseDiscount)} case)` : "";
+    const discount = li.caseDiscountApplied ? `  (-${money(li.caseDiscount)} ${li.caseDiscountLabel || "case"})` : "";
     return `  • ${qtyLabel.padEnd(42)} ${price}${discount}`;
   });
   return rows.join("\n");
@@ -54,7 +54,7 @@ function renderOrderBody(order, { kind = "draft" } = {}) {
 
   if (t.caseDiscount > 0) {
     lines.push(
-      `Wine case discount (${t.caseDiscountPercent}% on 6+ bottles):       -${money(t.caseDiscount)}`,
+      `Wine discount:                              -${money(t.caseDiscount)}`,
     );
   }
   if (t.weddingDiscountApplied) {

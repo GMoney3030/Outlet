@@ -22,6 +22,7 @@ const FALLBACK_CATALOG = [
   { sku: "RW-PIN-002", name: "Willamette Pinot Noir", category: "red wine", unitPrice: 19.99, caseSize: 12 },
   { sku: "WW-CHA-001", name: "Sonoma Chardonnay", category: "white wine", unitPrice: 15.99, caseSize: 12 },
   { sku: "WW-SAV-002", name: "Marlborough Sauvignon Blanc", category: "white wine", unitPrice: 13.99, caseSize: 12 },
+  { sku: "WW-PGR-003", name: "House Pinot Grigio", category: "white wine", unitPrice: 10.99, caseSize: 12 },
   { sku: "RO-PRV-001", name: "Provence Rosé", category: "rosé", unitPrice: 16.99, caseSize: 12 },
   { sku: "CH-BRU-001", name: "Brut Champagne", category: "champagne", unitPrice: 24.99, caseSize: 12 },
   { sku: "CH-PRS-002", name: "Prosecco", category: "sparkling", unitPrice: 12.99, caseSize: 12 },

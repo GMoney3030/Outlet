@@ -1,18 +1,59 @@
 // Discount engine.
 //
-//  • Case discount (wine only): 5% off when buying a full case of 12
-//    bottles OR a half-case of 6 bottles. Applied per line item.
-//  • Wedding discount: a flat WEDDING_DISCOUNT_PERCENT off the whole
-//    subtotal when guest count is ≥ WEDDING_DISCOUNT_MIN_GUESTS.
+//  Wine/champagne discounts (applied per line item):
 //
-// Both are additive and applied in that order.
+//  1. Value wine discount — bottles priced under VALUE_WINE_THRESHOLD ($13.99):
+//       • 3–5 bottles → $1 off per bottle
+//       • 6+ bottles  → $2 off per bottle
+//
+//  2. Case discount — bottles priced ≥ $13.99:
+//       • 6+ bottles  → CASE_DISCOUNT_PERCENT (5%) off
+//
+//  Only one of the two applies per line (whichever matches the price tier).
+//
+//  Wedding discount: flat WEDDING_DISCOUNT_PERCENT off the post-wine-discount
+//  subtotal when guest count ≥ WEDDING_DISCOUNT_MIN_GUESTS. Stacks on top.
 
 const WINE_CATEGORIES = new Set([
   "red wine", "white wine", "rosé", "champagne", "sparkling",
 ]);
 
+const VALUE_WINE_THRESHOLD = 13.99;
+const VALUE_WINE_DISCOUNT_3_5 = 1.00;
+const VALUE_WINE_DISCOUNT_6_PLUS = 2.00;
+
 function round2(n) {
   return Math.round(n * 100) / 100;
+}
+
+function wineDiscount(item, casePct) {
+  const isWine = WINE_CATEGORIES.has(item.category);
+  if (!isWine) return { amount: 0, label: null };
+
+  if (item.unitPrice < VALUE_WINE_THRESHOLD) {
+    if (item.quantity >= 6) {
+      return {
+        amount: round2(VALUE_WINE_DISCOUNT_6_PLUS * item.quantity),
+        label: `$${VALUE_WINE_DISCOUNT_6_PLUS} off/bottle`,
+      };
+    }
+    if (item.quantity >= 3) {
+      return {
+        amount: round2(VALUE_WINE_DISCOUNT_3_5 * item.quantity),
+        label: `$${VALUE_WINE_DISCOUNT_3_5} off/bottle`,
+      };
+    }
+    return { amount: 0, label: null };
+  }
+
+  // $13.99+ wines: percentage case discount on 6+ bottles
+  if (item.quantity >= 6) {
+    return {
+      amount: round2(item.unitPrice * item.quantity * (casePct / 100)),
+      label: `${casePct}% case`,
+    };
+  }
+  return { amount: 0, label: null };
 }
 
 function applyDiscounts(order) {
@@ -25,14 +66,8 @@ function applyDiscounts(order) {
 
   const lineItems = order.lineItems.map((item) => {
     const lineGross = round2(item.unitPrice * item.quantity);
-    let lineCaseDiscount = 0;
-
-    // Wine case discount: 5% when buying 6+ bottles (half-case or full case)
-    const isWine = WINE_CATEGORIES.has(item.category);
-    if (isWine && item.quantity >= 6) {
-      lineCaseDiscount = round2(lineGross * (casePct / 100));
-    }
-
+    const disc = wineDiscount(item, casePct);
+    const lineCaseDiscount = disc.amount;
     const lineNet = round2(lineGross - lineCaseDiscount);
 
     subtotal += lineGross;
@@ -43,6 +78,7 @@ function applyDiscounts(order) {
       lineGross,
       caseDiscount: lineCaseDiscount,
       caseDiscountApplied: lineCaseDiscount > 0,
+      caseDiscountLabel: disc.label,
       lineNet,
     };
   });
