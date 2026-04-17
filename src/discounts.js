@@ -1,20 +1,22 @@
 // Discount engine.
 //
-//  • Case discount: when the quantity of a single SKU meets CASE_SIZE,
-//    that line gets CASE_DISCOUNT_PERCENT off. (Apply per line so mixed
-//    orders still get partial case discounts.)
+//  • Case discount (wine only): 5% off when buying a full case of 12
+//    bottles OR a half-case of 6 bottles. Applied per line item.
 //  • Wedding discount: a flat WEDDING_DISCOUNT_PERCENT off the whole
 //    subtotal when guest count is ≥ WEDDING_DISCOUNT_MIN_GUESTS.
 //
 // Both are additive and applied in that order.
+
+const WINE_CATEGORIES = new Set([
+  "red wine", "white wine", "rosé", "champagne", "sparkling",
+]);
 
 function round2(n) {
   return Math.round(n * 100) / 100;
 }
 
 function applyDiscounts(order) {
-  const caseSize = Number(process.env.CASE_SIZE || 12);
-  const casePct = Number(process.env.CASE_DISCOUNT_PERCENT || 10);
+  const casePct = Number(process.env.CASE_DISCOUNT_PERCENT || 5);
   const weddingPct = Number(process.env.WEDDING_DISCOUNT_PERCENT || 15);
   const weddingMin = Number(process.env.WEDDING_DISCOUNT_MIN_GUESTS || 50);
 
@@ -22,12 +24,15 @@ function applyDiscounts(order) {
   let caseDiscountTotal = 0;
 
   const lineItems = order.lineItems.map((item) => {
-    const unitsForDiscount = Math.floor(item.quantity / (item.caseSize || caseSize));
-    const discountableUnits = unitsForDiscount * (item.caseSize || caseSize);
     const lineGross = round2(item.unitPrice * item.quantity);
-    const lineCaseDiscount = round2(
-      item.unitPrice * discountableUnits * (casePct / 100),
-    );
+    let lineCaseDiscount = 0;
+
+    // Wine case discount: 5% when buying 6+ bottles (half-case or full case)
+    const isWine = WINE_CATEGORIES.has(item.category);
+    if (isWine && item.quantity >= 6) {
+      lineCaseDiscount = round2(lineGross * (casePct / 100));
+    }
+
     const lineNet = round2(lineGross - lineCaseDiscount);
 
     subtotal += lineGross;

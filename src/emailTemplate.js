@@ -54,7 +54,7 @@ function renderOrderBody(order, { kind = "draft" } = {}) {
 
   if (t.caseDiscount > 0) {
     lines.push(
-      `Case discount (${t.caseDiscountPercent}% on full cases):          -${money(t.caseDiscount)}`,
+      `Wine case discount (${t.caseDiscountPercent}% on 6+ bottles):       -${money(t.caseDiscount)}`,
     );
   }
   if (t.weddingDiscountApplied) {

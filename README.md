@@ -95,7 +95,7 @@ Two discounts, both configurable in `.env`:
 
 | Discount              | How it's applied                                              |
 | --------------------- | ------------------------------------------------------------- |
-| **Case discount**     | Any line with ≥ `CASE_SIZE` units gets `CASE_DISCOUNT_PERCENT` off the full-case portion. |
+| **Wine case discount** | Wine lines (red, white, rosé, champagne, sparkling) with 6+ bottles get `CASE_DISCOUNT_PERCENT` (default 5%) off. Applies to both half-cases (6) and full cases (12+). |
 | **Wedding discount**  | Flat `WEDDING_DISCOUNT_PERCENT` off the post-case subtotal when `guestCount ≥ WEDDING_DISCOUNT_MIN_GUESTS`. |
 
 Both appear as their own line in the email so the customer can see exactly
